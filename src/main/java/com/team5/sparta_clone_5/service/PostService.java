@@ -3,6 +3,8 @@ package com.team5.sparta_clone_5.service;
 import com.team5.sparta_clone_5.dto.request.PostRequestDto;
 import com.team5.sparta_clone_5.dto.response.GlobalResDto;
 import com.team5.sparta_clone_5.dto.response.PostResponseDto;
+import com.team5.sparta_clone_5.exception.CustomException;
+import com.team5.sparta_clone_5.exception.ErrorCode;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.repository.PostRepository;
@@ -44,7 +46,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public GlobalResDto<PostResponseDto> onePost(Long postId){
-        Post post = postRepository.findByPostId(postId);
+        Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("글 조회", ErrorCode.NotFound));
         PostResponseDto postResponseDto = new PostResponseDto(post);
         return GlobalResDto.success(postResponseDto,"a");
     }

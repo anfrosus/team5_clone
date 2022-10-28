@@ -29,6 +29,7 @@ public class CustomExceptionHandler {
             return ResponseEntity
                     .status(e.getErrorCode().getHttpStatus())
                     .body(ErrorResponse.builder()
+                            .httpStatus(e.getErrorCode().getHttpStatus())
                             .errorCode(e.getErrorCode().getErrorCode())
                             .field(e.getField())
                             .message(e.getErrorCode().getMessage())

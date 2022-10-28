@@ -45,10 +45,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         //엑세스 토큰 가지고 있다면
         if (accessToken != null) {
 
-            if (jwtUtil.validateAccessToken(accessToken) == 1 || jwtUtil.validateAccessToken(accessToken) == 2) {
-                //규범님 방식 -> 숫자로 리턴받아서 나누어 처리하는 방법도 있음
+            //엑세스 유효하면 안타야됨
+            if (jwtUtil.validateAccessToken(accessToken) != 1) {
 
-                if (refreshToken != null) {
+                if (refreshToken != null && jwtUtil.validateAccessToken(accessToken) == 2) {
 
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
 //                        jwtExceptionHandler(response, "refreshToken 이 유효하지 않습니다. (refreshToken Not Valid)", HttpStatus.BAD_REQUEST);

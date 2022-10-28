@@ -13,10 +13,10 @@ public class Comment extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long id;
 
     @Column(nullable = false)
-    private String contents;
+    private String comment;
 
     @JsonIgnore
     @ManyToOne
@@ -26,4 +26,10 @@ public class Comment extends TimeStamped {
     @ManyToOne
     @JoinColumn
     private Member member;
+
+    public Comment(String comment, Post post, Member member) {
+        this.comment = comment;
+        this.post = post;
+        this.member = member;
+    }
 }

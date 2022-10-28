@@ -36,7 +36,7 @@ public class Post {
     List<Comment> comment = new ArrayList<>();
 
     @ManyToOne
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private Member member;
 
     public Post(PostRequestDto postRequestDto, Member member, String img){

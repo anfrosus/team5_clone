@@ -1,7 +1,5 @@
 package com.team5.sparta_clone_5.service;
 
-import com.team5.sparta_clone_5.dto.response.GlobalResDto;
-import com.team5.sparta_clone_5.dto.response.PostResponseDto;
 import com.team5.sparta_clone_5.exception.CustomException;
 import com.team5.sparta_clone_5.exception.ErrorCode;
 import com.team5.sparta_clone_5.model.Member;

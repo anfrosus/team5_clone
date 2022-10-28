@@ -1,5 +1,6 @@
 package com.team5.sparta_clone_5.service;
 
+import com.team5.sparta_clone_5.config.UserDetailsImpl;
 import com.team5.sparta_clone_5.dto.request.LoginRequestDto;
 import com.team5.sparta_clone_5.dto.request.SignupRequestDto;
 import com.team5.sparta_clone_5.dto.response.MemberResponseDto;
@@ -13,6 +14,7 @@ import com.team5.sparta_clone_5.repository.MemberRepository;
 import com.team5.sparta_clone_5.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -93,6 +95,12 @@ public class MemberService {
                         .msg("로그인 완료")
                         .build()
         );
+    }
+
+    @Transactional
+    public ResponseEntity<String> logout(Member currentMember) {
+        refreshTokenRepository.deleteByEmail(currentMember.getEmail());
+        return ResponseEntity.ok("로그아웃 완료");
     }
 
     private static void setHeader(HttpServletResponse response, TokenDto tokenDto) {

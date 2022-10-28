@@ -3,6 +3,8 @@ package com.team5.sparta_clone_5.service;
 import com.team5.sparta_clone_5.dto.request.LoginRequestDto;
 import com.team5.sparta_clone_5.dto.request.SignupRequestDto;
 import com.team5.sparta_clone_5.dto.response.MemberResponseDto;
+import com.team5.sparta_clone_5.exception.CustomException;
+import com.team5.sparta_clone_5.exception.ErrorCode;
 import com.team5.sparta_clone_5.jwt.JwtUtil;
 import com.team5.sparta_clone_5.jwt.TokenDto;
 import com.team5.sparta_clone_5.model.Member;
@@ -28,9 +30,18 @@ public class MemberService {
 
     private final JwtUtil jwtUtil;
 
+
+    //회원가입
     @Transactional
     public ResponseEntity<MemberResponseDto> createMember(SignupRequestDto signupRequestDto) {
-        // 검증 로직 및 예외처리 작성
+        //중복확인
+        if(memberRepository.existsByEmail(signupRequestDto.getMemberEmail())) {
+            throw new CustomException("email", ErrorCode.AlreadyExists);
+        }else if (memberRepository.existsByName(signupRequestDto.getMemberName())) {
+            throw new CustomException("Name", ErrorCode.AlreadyExists);
+        }else if (!signupRequestDto.getMemberPw().equals(signupRequestDto.getPwCheck())) {
+            throw new CustomException("비밀번호 확인", ErrorCode.NotMatch);
+        }
         //저장
         Member member = Member.builder()
                 .email(signupRequestDto.getMemberEmail())
@@ -43,20 +54,21 @@ public class MemberService {
         return ResponseEntity.ok(
                 MemberResponseDto.builder()
                         .memberId(member.getId())
-                        .msg("회원가입 완료")
+                        .msg("회원가입이 완료되었습니다.")
                         .build()
         );
     }
 
-    @Transactional
+    //마이페이지가 같이 생성되야하면 readOnly 는 빼야할 듯
+    @Transactional(readOnly = true)
     public ResponseEntity<MemberResponseDto> loginMember(LoginRequestDto loginRequestDto, HttpServletResponse response) {
 
         Member member = memberRepository.findByEmail(loginRequestDto.getMemberEmail()).orElseThrow(
-                () -> new IllegalArgumentException("존재하지 않는 아이디 입니다.")
+                () -> new CustomException("회원", ErrorCode.NotFound)
         );
         //패스워드 인코더의 매치스함수 이용해서 비밀번호 대조 (boolean 리턴)
         if (!passwordEncoder.matches(loginRequestDto.getMemberPw(), member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException("비밀번호", ErrorCode.NotMatch);
         }
 
         //인증 된 사람에게 토큰 발급하기

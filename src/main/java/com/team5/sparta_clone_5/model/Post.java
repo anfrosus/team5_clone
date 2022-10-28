@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Post {
+public class Post extends TimeStamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
@@ -41,13 +41,21 @@ public class Post {
 
     @JsonIgnore
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    List<Comment> comment = new ArrayList<>();
+    List<Comment> commentList = new ArrayList<>();
 
-    public Post(PostRequestDto postRequestDto, Account account, String img){
-        this.email = account.getEmail();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    List<PostLike> postLikeList = new ArrayList<>();
+
+    public Post(PostRequestDto postRequestDto, Member member, String img){
+        this.email = member.getEmail();
         this.name = postRequestDto.getName();
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
         this.img = img;
     }
+
+    public void postLikeUpdate(int size) {
+        this.likeSize = size;
+    }
+
 }

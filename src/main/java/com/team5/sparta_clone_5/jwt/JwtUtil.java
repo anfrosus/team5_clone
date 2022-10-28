@@ -94,28 +94,31 @@ public class JwtUtil {
 
 
     /*access 토큰 검증*/
-    public Boolean validateAccessToken(String accessToken) {
+    public int validateAccessToken(String accessToken) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken);  //parseClaimsJws 들어가면 예외 볼수있음
-            return true;
+            return 1;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
+            return 3;
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
             // 이 때만 재발급 해줘야 겠네 !
             // boolean말고 숫자로 -> 앞단에서
+            return 2;
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
+            return 3;
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
+            return 3;
         }
-        return false;
     }
 
     /*refresh 토큰 검증*/
     public Boolean validateRefreshToken(String refreshToken) {
-        // 1차 토큰 검증
-        if(!validateAccessToken(refreshToken)) return false;
+        // 1차 access 토큰 검증
+        if(validateAccessToken(refreshToken) != 1) return false;
 
         // DB에 저장한 토큰 비교
         Optional<RefreshToken> savedRefreshToken = refreshTokenRepository.findByEmail(getEmailFromToken(refreshToken));

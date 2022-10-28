@@ -23,6 +23,6 @@ public class AccessDeniedHandlerException implements AccessDeniedHandler {
                         new ResponseEntity("권한이 없습니다.", HttpStatus.UNAUTHORIZED)
                 )
         );
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 }

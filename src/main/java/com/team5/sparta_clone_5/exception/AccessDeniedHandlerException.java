@@ -20,7 +20,9 @@ public class AccessDeniedHandlerException implements AccessDeniedHandler {
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(
                 new ObjectMapper().writeValueAsString(
-                        new ResponseEntity("권한이 없습니다.", HttpStatus.UNAUTHORIZED)
+                        ResponseEntity
+                                .status(HttpStatus.BAD_REQUEST)
+                                .body("권한이 없습니다.")
                 )
         );
 //        response.setStatus(HttpServletResponse.SC_FORBIDDEN);

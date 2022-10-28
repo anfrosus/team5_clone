@@ -22,4 +22,8 @@ public class Comment extends TimeStamped {
     @ManyToOne
     @JoinColumn(name = "postId")
     private Post post;
+
+    @ManyToOne
+    @JoinColumn
+    private Member member;
 }

@@ -40,20 +40,6 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errors);
     }
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity handleValidationExceptions2(ValidationException e) {
-        List<ErrorResponse> errors = new ArrayList<>();
-
-            errors.add(ErrorResponse.builder()
-                    .httpStatus(HttpStatus.BAD_REQUEST.value())
-                    .message(e.getMessage())
-                    .build()
-            );
-
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("하위");
-    }
     // test
     @RequiredArgsConstructor
     @Getter

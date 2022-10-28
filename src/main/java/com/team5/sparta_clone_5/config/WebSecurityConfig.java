@@ -46,27 +46,27 @@ public class WebSecurityConfig {
         return (web) -> web.ignoring().antMatchers("/h2-console/**");
     }
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-
-//        corsConfiguration.setAllowedOrigins(Arrays.asList());
-        corsConfiguration.addAllowedOrigin("http//프론트origin");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD","GET", "PUT", "POST", "DELETE"));
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource(){
+//        CorsConfiguration corsConfiguration = new CorsConfiguration();
+//
+////        corsConfiguration.setAllowedOrigins(Arrays.asList());
+//        corsConfiguration.addAllowedOrigin("http//프론트origin");
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD","GET", "PUT", "POST", "DELETE"));
+//        corsConfiguration.addAllowedMethod("*");
+//        corsConfiguration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", corsConfiguration);
+//        return source;
+//    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+//        http
 //                httpBasic().disable()       //있어야하나? auth기반 로그인창 띄우는 것이라던데. .
-                .cors().configurationSource(corsConfigurationSource());
+//                .cors().configurationSource(corsConfigurationSource());
 
         http.csrf().disable();
 

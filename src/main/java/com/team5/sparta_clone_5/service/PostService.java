@@ -1,4 +1,4 @@
-package com.team5.sparta_clone_5.dto.request.service;
+package com.team5.sparta_clone_5.service;
 
 import com.team5.sparta_clone_5.dto.request.PostRequestDto;
 import com.team5.sparta_clone_5.dto.response.GlobalResDto;

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor
-public class Comment {
+public class Comment extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +22,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "postId")
     private Post post;
+
+    @ManyToOne
+    @JoinColumn
+    private Member member;
 }

@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         //엑세스 토큰 가지고 있다면
         if (accessToken != null) {
 
-            if (!jwtUtil.validateAccessToken(accessToken)) {
+            if (jwtUtil.validateAccessToken(accessToken) == 1 || jwtUtil.validateAccessToken(accessToken) == 2) {
                 //규범님 방식 -> 숫자로 리턴받아서 나누어 처리하는 방법도 있음
 
                 if (refreshToken != null) {
@@ -53,7 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
 //                        jwtExceptionHandler(response, "refreshToken 이 유효하지 않습니다. (refreshToken Not Valid)", HttpStatus.BAD_REQUEST);
                         //로그 찍고 Authentication 날려주면 되겠네.
-                        throw new AuthenticationException("토큰유효X(로그인이 필요합니다.)");
+                        throw new AuthenticationException("토큰유효X");
 //                        return;  ->  doFilter 나간다.
                     }// else 로 해도되지않나? 일단 생각해보자
                     if(!fin) {
@@ -71,7 +71,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     }
                 } else {
 //                    jwtExceptionHandler(response, "토큰이 존재하지 않습니다. (No Token)", HttpStatus.BAD_REQUEST);
-                    throw new AuthenticationException("토큰없음(로그인이 필요합니다.)");
+                    throw new AuthenticationException("access토큰 잘못됨");
                 }
             }
             if(!fin) setAuthentication(jwtUtil.getEmailFromToken(accessToken));

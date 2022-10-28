@@ -66,20 +66,21 @@ public class CommentService {
         recommentRepository.save(recomment);
         return ResponseEntity.ok(
                 CommentResponseDto.builder()
-                    .commentId(recomment.getId())
-                    .name(currentMember.getName())
-                    .comment(recomment.getRecomment())
-                    .msg("대댓글 작성 완료")
-                    .build()
+                        .commentId(recomment.getId())
+                        .name(currentMember.getName())
+                        .comment(recomment.getRecomment())
+                        .createdAt(Chrono.timesAgo(recomment.getCreatedAt()))
+                        .msg("대댓글 작성 완료")
+                        .build()
         );
     }
 
     @Transactional
     public ResponseEntity<CommentResponseDto> deleteRecomment(Long recommentId, Member currentMember) {
         Recomment recomment = recommentRepository.findById(recommentId).orElseThrow(() -> new CustomException("대댓글 삭제 게시글", ErrorCode.NotFound));
-        if (recomment.getMember().getId().equals(currentMember.getId())){
+        if (recomment.getMember().getId().equals(currentMember.getId())) {
             recommentRepository.delete(recomment);
-        }else{
+        } else {
             throw new CustomException("대댓글 삭제 회원", ErrorCode.NotMatch);
         }
         return ResponseEntity.ok(

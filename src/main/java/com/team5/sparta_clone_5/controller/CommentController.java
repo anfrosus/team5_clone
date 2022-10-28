@@ -18,14 +18,14 @@ import javax.validation.Valid;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("{postId}")
+    @PostMapping("/{postId}")
     public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long postId,
                                                             @RequestBody @Valid CommentRequestDto commentRequestDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.createComment(postId, commentRequestDto, userDetails.getMember());
     }
 
-    @DeleteMapping("{commentId}")
+    @DeleteMapping("/{commentId}")
     public ResponseEntity<CommentResponseDto> deleteComment(@PathVariable Long commentId,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(commentId, userDetails.getMember());

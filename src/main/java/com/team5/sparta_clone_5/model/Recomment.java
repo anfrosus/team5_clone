@@ -1,33 +1,32 @@
 package com.team5.sparta_clone_5.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 
-
-@NoArgsConstructor
-@Getter
 @Entity
-public class PostLike {
+@Getter
+@NoArgsConstructor
+public class Recomment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
-    private Post post;
+    private Comment comment;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Member member;
 
+    private String recomment;
 
-    public PostLike(Post post, Member member) {
-        this.post = post;
+    public Recomment(Comment comment, Member member, String recomment) {
+        this.comment = comment;
         this.member = member;
+        this.recomment = recomment;
     }
 }

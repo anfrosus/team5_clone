@@ -3,6 +3,7 @@ package com.team5.sparta_clone_5.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -27,12 +28,15 @@ public class Member extends TimeStamped{
     private String password;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Post> postList;
+    private List<Post> postList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<PostLike> postLikeList;
+    private List<PostLike> postLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Recomment> recommentList = new ArrayList<>();
 }
 

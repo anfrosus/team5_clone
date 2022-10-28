@@ -9,16 +9,14 @@ import lombok.NoArgsConstructor;
 public class PostResponseDto {
     private Long postId;
     private String name;
-    private String title;
     private String contents;
     private String img;
     private int commentSize;
     private int likeSize;
 
-    public PostResponseDto(Post post,Account account) {
+    public PostResponseDto(Post post) {
         this.postId = post.getPostId();
-        this.name = account.name;
-        this.title = post.getTitle();
+        this.name = post.getMember().getName();
         this.contents = post.getContents();
         this.commentSize = commentSize;
         this.likeSize = likeSize;

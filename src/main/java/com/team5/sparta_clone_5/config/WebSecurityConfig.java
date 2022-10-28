@@ -8,6 +8,7 @@ import com.team5.sparta_clone_5.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -79,7 +80,7 @@ public class WebSecurityConfig {
 
         http.authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-
+                .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                 .anyRequest().authenticated()
 
                 //security 인증 필터 앞에 jwt 필터 추가

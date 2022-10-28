@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 public class PostRequestDto {
     private String email;
     private String name;
-    private String title;
     private String contents;
     private String img;
 }

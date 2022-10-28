@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,19 +19,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
-
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String title;
     @Column(nullable = false)
     private String contents;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String img;
 
     @Column(nullable = false)
@@ -43,11 +35,13 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     List<Comment> comment = new ArrayList<>();
 
-    public Post(PostRequestDto postRequestDto, Account account, String img){
-        this.email = account.getEmail();
-        this.name = postRequestDto.getName();
-        this.title = postRequestDto.getTitle();
+    @ManyToOne
+    @Column(nullable = false)
+    private Member member;
+
+    public Post(PostRequestDto postRequestDto, Member member, String img){
         this.contents = postRequestDto.getContents();
         this.img = img;
+        this.member = member;
     }
 }

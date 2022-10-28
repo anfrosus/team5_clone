@@ -8,7 +8,8 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 public class Member extends TimeStamped{
 
@@ -34,3 +35,4 @@ public class Member extends TimeStamped{
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<PostLike> postLikeList;
 }
+

@@ -15,10 +15,15 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Post extends TimeStamped{
+public class Post extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Member member;
+
     @Column(nullable = false)
     private String contents;
 
@@ -35,15 +40,11 @@ public class Post extends TimeStamped{
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     List<Comment> commentList = new ArrayList<>();
 
-    @ManyToOne
-    @Column(nullable = false)
-    private Member member;
-
-    public Post(PostRequestDto postRequestDto, Member member, String img){
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     List<PostLike> postLikeList = new ArrayList<>();
 
-    public Post(PostRequestDto postRequestDto, Member member, String img){
+
+    public Post(PostRequestDto postRequestDto, Member member, String img) {
         this.contents = postRequestDto.getContents();
         this.img = img;
         this.member = member;
@@ -54,3 +55,4 @@ public class Post extends TimeStamped{
     }
 
 }
+

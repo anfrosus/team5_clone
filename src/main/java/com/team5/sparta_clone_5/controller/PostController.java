@@ -2,9 +2,10 @@ package com.team5.sparta_clone_5.controller;
 
 import com.team5.sparta_clone_5.config.UserDetailsImpl;
 import com.team5.sparta_clone_5.dto.request.PostRequestDto;
-import com.team5.sparta_clone_5.dto.request.service.PostService;
+
 import com.team5.sparta_clone_5.dto.response.GlobalResDto;
 import com.team5.sparta_clone_5.dto.response.PostResponseDto;
+import com.team5.sparta_clone_5.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;

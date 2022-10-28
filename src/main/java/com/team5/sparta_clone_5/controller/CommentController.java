@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comment")
@@ -18,7 +20,7 @@ public class CommentController {
 
     @PostMapping("{postId}")
     public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long postId,
-                                                            @RequestBody CommentRequestDto commentRequestDto,
+                                                            @RequestBody @Valid CommentRequestDto commentRequestDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.createComment(postId, commentRequestDto, userDetails.getMember());
     }

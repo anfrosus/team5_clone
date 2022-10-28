@@ -3,9 +3,15 @@ package com.team5.sparta_clone_5.exception;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
@@ -15,6 +21,25 @@ public class CustomExceptionHandler {
 
         return ErrorResponse.toResponseEntity(e);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity handleValidationExceptions(MethodArgumentNotValidException e) {
+        List<ErrorResponse> errors = new ArrayList<>();
+
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()){
+            errors.add(ErrorResponse.builder()
+                    .httpStatus(HttpStatus.BAD_REQUEST.value())
+                    .errorCode(fieldError.getCode())
+                    .field(fieldError.getField())
+                    .message(fieldError.getDefaultMessage())
+                    .build()
+            );
+        }
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errors);
+    }
+
     // test
     @RequiredArgsConstructor
     @Getter

@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PostRequestDto {
-    private String email;
-    private String name;
     private String contents;
     private String img;
 }

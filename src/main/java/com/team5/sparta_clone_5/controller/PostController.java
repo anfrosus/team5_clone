@@ -5,6 +5,7 @@ import com.team5.sparta_clone_5.dto.request.PostReqDto2;
 import com.team5.sparta_clone_5.dto.request.PostRequestDto;
 
 import com.team5.sparta_clone_5.dto.response.GlobalResDto;
+import com.team5.sparta_clone_5.dto.response.OnePostResponseDto;
 import com.team5.sparta_clone_5.dto.response.PostResponseDto;
 import com.team5.sparta_clone_5.service.PostService;
 import lombok.NoArgsConstructor;
@@ -44,7 +45,7 @@ public class PostController {
     }
 
     @GetMapping("/post/{postId}")
-    public GlobalResDto<PostResponseDto> onePost(@PathVariable Long postId){
+    public GlobalResDto<OnePostResponseDto> onePost(@PathVariable Long postId){
         return postService.onePost(postId);
     }
 

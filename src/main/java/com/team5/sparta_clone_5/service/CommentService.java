@@ -36,7 +36,6 @@ public class CommentService {
                 .commentId(comment.getId())
                 .name(currentMember.getName())
                 .comment(comment.getComment())
-                .msg("댓글 작성 완료")
                 .createdAt(Chrono.timesAgo(comment.getCreatedAt()))
                 .build()
         );
@@ -53,7 +52,6 @@ public class CommentService {
         return ResponseEntity.ok(
                 CommentResponseDto.builder()
                         .commentId(commentId)
-                        .msg("댓글 삭제 완료")
                         .build()
         );
     }
@@ -70,7 +68,6 @@ public class CommentService {
                         .name(currentMember.getName())
                         .comment(recomment.getRecomment())
                         .createdAt(Chrono.timesAgo(recomment.getCreatedAt()))
-                        .msg("대댓글 작성 완료")
                         .build()
         );
     }
@@ -85,7 +82,6 @@ public class CommentService {
         }
         return ResponseEntity.ok(
                 CommentResponseDto.builder()
-                        .msg("대댓글 삭제 완료")
                         .build()
         );
     }

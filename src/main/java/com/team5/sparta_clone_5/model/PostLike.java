@@ -25,7 +25,6 @@ public class PostLike {
     @JoinColumn(nullable = false)
     private Member member;
 
-
     public PostLike(Post post, Member member) {
         this.post = post;
         this.member = member;

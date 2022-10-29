@@ -1,12 +1,16 @@
 package com.team5.sparta_clone_5.service;
 
 import com.team5.sparta_clone_5.dto.request.PostReqDto2;
+import com.team5.sparta_clone_5.dto.response.CommentResponseDto;
 import com.team5.sparta_clone_5.dto.response.GlobalResDto;
+import com.team5.sparta_clone_5.dto.response.OnePostResponseDto;
 import com.team5.sparta_clone_5.dto.response.PostResponseDto;
 import com.team5.sparta_clone_5.exception.CustomException;
 import com.team5.sparta_clone_5.exception.ErrorCode;
+import com.team5.sparta_clone_5.model.Comment;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
+import com.team5.sparta_clone_5.repository.CommentRepository;
 import com.team5.sparta_clone_5.repository.PostRepository;
 
 import com.team5.sparta_clone_5.s3.S3Uploader;
@@ -23,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     private final S3Uploader s3Uploader;
 
 //    @Transactional
@@ -59,10 +64,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalResDto<PostResponseDto> onePost(Long postId){
+    public GlobalResDto<OnePostResponseDto> onePost(Long postId){
         Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("글 조회", ErrorCode.NotFound));
-        PostResponseDto postResponseDto = new PostResponseDto(post);
-        return GlobalResDto.success(postResponseDto,"a");
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for (Comment comment : post.getCommentList()){
+            commentResponseDtoList.add(new CommentResponseDto(comment));
+        }
+        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post, commentResponseDtoList);
+        return GlobalResDto.success(onePostResponseDto,"조회 성공");
     }
 
     @Transactional

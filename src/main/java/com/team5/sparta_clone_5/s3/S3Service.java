@@ -29,27 +29,9 @@ public class S3Service {
     public String uploadFile(MultipartFile file) {
         File fileObj = convertMultiPartFileToFile(file);
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        System.out.println("버킷 이름은: "+ bucketName);
-        System.out.println("파일 이름은: "+ fileName);
-        System.out.println("fileObj 이름: "+ fileObj.getName());
-        System.out.println("fileObj AbsolutePath: " + fileObj.getAbsolutePath());
-        System.out.println("fileObj Path: " + fileObj.getPath());
-        System.out.println("fileObj ParentFile: " + fileObj.getParentFile());
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
         fileObj.delete();
         return "File uploaded : " + fileName;
-    }
-
-
-    public byte[] downloadFile(String fileName) {
-        S3Object s3Object = s3Client.getObject(bucketName, fileName);
-        S3ObjectInputStream inputStream = s3Object.getObjectContent();
-        try {
-            return IOUtils.toByteArray(inputStream);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
 

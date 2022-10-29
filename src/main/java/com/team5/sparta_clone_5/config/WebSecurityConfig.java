@@ -81,6 +81,7 @@ public class WebSecurityConfig {
         http.authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
+                .antMatchers("/file/**").permitAll()
                 .anyRequest().authenticated()
 
                 //security 인증 필터 앞에 jwt 필터 추가

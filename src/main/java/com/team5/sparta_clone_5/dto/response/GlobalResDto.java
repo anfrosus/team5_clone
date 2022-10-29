@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class GlobalResDto<T> {
     private Boolean success;
     private T data;
-    private String error;
+    private String msg;
 
     public static <T> GlobalResDto <T> success(T data,String msg){
         return new GlobalResDto<>(true, data, msg);

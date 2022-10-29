@@ -8,10 +8,7 @@ import com.team5.sparta_clone_5.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -31,7 +28,7 @@ public class MemberController {
         return memberService.loginMember(loginRequestDto, response);
     }
 
-    @PostMapping("/api/logout")
+    @GetMapping("/api/logout")
     public ResponseEntity<String> login(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return memberService.logout(userDetails.getMember());
     }

@@ -68,6 +68,4 @@ public class PostService {
         return GlobalResDto.success(postResponseDto,"수정이 완료 되었습니다.");
 
     }
-
-
 }

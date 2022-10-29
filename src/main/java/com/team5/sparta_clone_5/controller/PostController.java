@@ -39,7 +39,7 @@ public class PostController {
         return postService.delPost(postId,userDetails.getMember());
     }
 
-    @PatchMapping("/post/{postId}")
+    @PutMapping("/post/{postId}")
     public GlobalResDto<PostResponseDto> modifyPost(@PathVariable Long postId, @RequestBody Map<String,String> req, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return postService.modifyPost(postId, req.get("contents"),userDetails.getMember());
     }

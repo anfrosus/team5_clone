@@ -31,8 +31,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final RefreshTokenRepository refreshTokenRepository;
 
-    private boolean fin = false;
-
     @Override                       //서블릿에서 만들어놓은 객체들(요청을 받아올 때 미리 response 객체 생성함)
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
@@ -51,12 +49,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 if (refreshToken != null && jwtUtil.validateAccessToken(accessToken) == 2) {
 
                     if (!jwtUtil.validateRefreshToken(refreshToken)) {
-//                        jwtExceptionHandler(response, "refreshToken 이 유효하지 않습니다. (refreshToken Not Valid)", HttpStatus.BAD_REQUEST);
+                        jwtExceptionHandler(response, "인증이 필요. (refreshToken Not Valid)", HttpStatus.BAD_REQUEST);
                         //로그 찍고 Authentication 날려주면 되겠네.
-                        throw new AuthenticationException("토큰유효X");
+//                        throw new AuthenticationException("토큰유효X");
 //                        return;  ->  doFilter 나간다.
-                    }// else 로 해도되지않나? 일단 생각해보자
-                    if(!fin) {
+                    }else{
                         //리프레쉬 토큰이 유효하다면
 
                         //리프레쉬 토큰 폐기 및 재발급 (db에 있는 refreshtoken 교체하기)
@@ -66,17 +63,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                         response.addHeader(JwtUtil.ACCESS, jwtUtil.createAccessToken(jwtUtil.getEmailFromToken(refreshToken)));
                         response.addHeader(JwtUtil.REFRESH, newRefreshToken);
                         setAuthentication(jwtUtil.getEmailFromToken(refreshToken));
-
-                        fin = true;
                     }
                 } else {
-//                    jwtExceptionHandler(response, "토큰이 존재하지 않습니다. (No Token)", HttpStatus.BAD_REQUEST);
-                    throw new AuthenticationException("access토큰 잘못됨");
+                    jwtExceptionHandler(response, "토큰이 존재하지 않습니다. (No Token)", HttpStatus.BAD_REQUEST);
+//                    throw new AuthenticationException("access토큰 잘못됨");
                 }
+            }else{
+                setAuthentication(jwtUtil.getEmailFromToken(accessToken));
             }
-            if(!fin) setAuthentication(jwtUtil.getEmailFromToken(accessToken));
-
-            fin = false;
         }
 
         //다음 필터로 넘겨주기

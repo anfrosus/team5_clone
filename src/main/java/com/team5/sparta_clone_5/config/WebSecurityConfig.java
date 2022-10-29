@@ -6,6 +6,8 @@ import com.team5.sparta_clone_5.jwt.JwtAuthFilter;
 import com.team5.sparta_clone_5.jwt.JwtUtil;
 import com.team5.sparta_clone_5.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,6 +28,8 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@ConditionalOnDefaultWebSecurity
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
@@ -51,11 +55,17 @@ public class WebSecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
 //        corsConfiguration.setAllowedOrigins(Arrays.asList());
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.setAllowedMethods(Arrays.asList("HEAD","GET", "PUT", "POST", "DELETE"));
-        corsConfiguration.addAllowedMethod("*");
+//        corsConfiguration.addAllowedOrigin("*");
+//        corsConfiguration.addAllowedHeader("*");
+//        corsConfiguration.addAllowedMethod("*");
+//        corsConfiguration.setAllowCredentials(true);
+        //
+
+        corsConfiguration.setAllowedOriginPatterns(Arrays.asList("*"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("POST","GET","DELETE","PUT"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
         corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addExposedHeader("*");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
@@ -64,9 +74,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.cors();
 //                httpBasic().disable()       //있어야하나? auth기반 로그인창 띄우는 것이라던데. .
-                .cors().configurationSource(corsConfigurationSource());
 
         http.csrf().disable();
 
@@ -79,6 +88,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
+                .antMatchers("/h2console/**").permitAll()
                 .antMatchers("/auth/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/post/**").permitAll()
                 .antMatchers("/file/**").permitAll()
@@ -90,4 +100,5 @@ public class WebSecurityConfig {
         return http.build();
 
     }
+
 }

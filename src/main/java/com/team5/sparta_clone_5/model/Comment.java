@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -13,10 +15,10 @@ public class Comment extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long id;
 
     @Column(nullable = false)
-    private String contents;
+    private String comment;
 
     @JsonIgnore
     @ManyToOne
@@ -26,4 +28,19 @@ public class Comment extends TimeStamped {
     @ManyToOne
     @JoinColumn
     private Member member;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    private List<Recomment> recomment = new ArrayList<>();
+
+    private int commentLikeSize;
+
+    public Comment(String comment, Post post, Member member) {
+        this.comment = comment;
+        this.post = post;
+        this.member = member;
+    }
+
+    public void updateLikeSize(int size) {
+        this.commentLikeSize = size;
+    }
 }

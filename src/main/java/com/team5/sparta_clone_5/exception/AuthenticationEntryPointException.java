@@ -24,6 +24,6 @@ public class AuthenticationEntryPointException implements
                         new ResponseEntity("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED)
                 )
         );
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

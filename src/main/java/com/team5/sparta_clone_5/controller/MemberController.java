@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,12 +22,12 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/auth/signup")
-    public ResponseEntity<MemberResponseDto> signUp(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseEntity<MemberResponseDto> signUp(@RequestBody @Valid SignupRequestDto signupRequestDto) {
         return memberService.createMember(signupRequestDto);
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity<MemberResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public ResponseEntity<MemberResponseDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return memberService.loginMember(loginRequestDto, response);
     }
 

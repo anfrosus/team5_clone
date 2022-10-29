@@ -21,10 +21,10 @@ public class AccessDeniedHandlerException implements AccessDeniedHandler {
         response.getWriter().println(
                 new ObjectMapper().writeValueAsString(
                         ResponseEntity
-                                .status(HttpStatus.BAD_REQUEST)
+                                .status(HttpStatus.FORBIDDEN)
                                 .body("권한이 없습니다.")
                 )
         );
-//        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
 }

@@ -10,6 +10,7 @@ public class PostResponseDto {
     private Long postId;
     private String name;
     private String contents;
+
     private String img;
     private int commentSize;
     private int likeSize;
@@ -18,7 +19,7 @@ public class PostResponseDto {
         this.postId = post.getPostId();
         this.name = post.getMember().getName();
         this.contents = post.getContents();
-        this.commentSize = commentSize;
-        this.likeSize = likeSize;
+        this.commentSize = post.getCommentSize();
+        this.likeSize = post.getLikeSize();
     }
 }

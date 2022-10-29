@@ -2,9 +2,7 @@ package com.team5.sparta_clone_5.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.team5.sparta_clone_5.dto.request.PostRequestDto;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Post extends TimeStamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

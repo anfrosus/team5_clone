@@ -45,7 +45,7 @@ public class PostService {
         String imgUrl = s3Uploader.uploadFiles(postReqDto2.getImg(), "mydir");
         Post post = Post.builder().img(imgUrl).contents(postReqDto2.getContent()).member(currentMember).build();
         postRepository.save(post);
-        return GlobalResDto.success(new PostResponseDto(post, imgUrl), "작성 완료");
+        return GlobalResDto.success(new PostResponseDto(post), "작성 완료");
     }
 
     @Transactional(readOnly = true)

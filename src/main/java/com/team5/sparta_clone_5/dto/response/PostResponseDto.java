@@ -33,14 +33,4 @@ public class PostResponseDto {
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
     }
-    public PostResponseDto(Post post, String imgUrl) {
-        this.postId = post.getPostId();
-        this.name = post.getMember().getName();
-        this.contents = post.getContents();
-        this.img = imgUrl;
-        this.commentSize = post.getCommentSize();
-        this.likeSize = post.getLikeSize();
-        this.createdAt = Chrono.timesAgo(post.getCreatedAt());
-        this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
-    }
 }

@@ -29,12 +29,18 @@ public class Comment extends TimeStamped {
     @JoinColumn
     private Member member;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     private List<Recomment> recomment = new ArrayList<>();
+
+    private int commentLikeSize;
 
     public Comment(String comment, Post post, Member member) {
         this.comment = comment;
         this.post = post;
         this.member = member;
+    }
+
+    public void updateLikeSize(int size) {
+        this.commentLikeSize = size;
     }
 }

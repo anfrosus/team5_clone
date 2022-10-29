@@ -1,5 +1,6 @@
 package com.team5.sparta_clone_5.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Member extends TimeStamped{
     @Column(nullable = false, unique = true)
     private String name;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 

@@ -3,6 +3,7 @@ package com.team5.sparta_clone_5.controller;
 import com.team5.sparta_clone_5.config.UserDetailsImpl;
 import com.team5.sparta_clone_5.dto.request.CommentRequestDto;
 import com.team5.sparta_clone_5.dto.response.CommentResponseDto;
+import com.team5.sparta_clone_5.dto.response.RecommentResDto;
 import com.team5.sparta_clone_5.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,4 +32,8 @@ public class RecommentController {
         return commentService.deleteRecomment(recommentId, userDetails.getMember());
     }
 
+    @GetMapping("/{commentId}")
+    public ResponseEntity<List<RecommentResDto>> getRecomment(@PathVariable Long commentId) {
+        return commentService.selectRecomment(commentId);
+    }
 }

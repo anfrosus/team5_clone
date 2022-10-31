@@ -25,6 +25,7 @@ public class Recomment extends TimeStamped{
     @Column(nullable = false)
     private String recomment;
 
+
     public Recomment(Comment comment, Member member, String recomment) {
         this.comment = comment;
         this.member = member;

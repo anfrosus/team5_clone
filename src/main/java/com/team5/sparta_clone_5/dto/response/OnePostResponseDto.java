@@ -23,6 +23,7 @@ public class OnePostResponseDto {
     private int likeSize;
     private String createdAt;
     private String modifiedAt;
+    private Boolean amILike;
 
     private List<CommentResponseDto> commentList;
 
@@ -36,7 +37,7 @@ public class OnePostResponseDto {
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
     }
 
-    public OnePostResponseDto(Post post, List<CommentResponseDto> commentResponseDtoList) {
+    public OnePostResponseDto(Post post, List<CommentResponseDto> commentResponseDtoList, Boolean amILike) {
         this.postId = post.getPostId();
         this.name = post.getMember().getName();
         this.contents = post.getContents();
@@ -45,5 +46,6 @@ public class OnePostResponseDto {
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
         this.commentList = commentResponseDtoList;
+        this.amILike = amILike;
     }
 }

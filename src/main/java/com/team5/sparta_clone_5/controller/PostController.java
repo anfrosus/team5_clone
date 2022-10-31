@@ -45,8 +45,9 @@ public class PostController {
     }
 
     @GetMapping("/post/{postId}")
-    public GlobalResDto<OnePostResponseDto> onePost(@PathVariable Long postId){
-        return postService.onePost(postId);
+    public GlobalResDto<OnePostResponseDto> onePost(@PathVariable Long postId,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.onePost(postId, userDetails.getMember());
     }
 
     @DeleteMapping("/post/{postId}")

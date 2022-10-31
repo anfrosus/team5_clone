@@ -21,7 +21,7 @@ public class AuthenticationEntryPointException implements
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(
                 new ObjectMapper().writeValueAsString(
-                        new ResponseEntity("로그인이 필요합니다.", HttpStatus.UNAUTHORIZED)
+                        new ResponseEntity("LogIn plz", HttpStatus.UNAUTHORIZED)
                 )
         );
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

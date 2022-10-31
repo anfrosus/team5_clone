@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class PostResponseDto {
+
+public class OnePostResponseDto {
     private Long postId;
     private String name;
     private String contents;
@@ -19,19 +21,31 @@ public class PostResponseDto {
     private String img;
     private int commentSize;
     private int likeSize;
-
     private String createdAt;
     private String modifiedAt;
 
-    public PostResponseDto(Post post) {
+    private List<CommentResponseDto> commentList;
+
+    public OnePostResponseDto(Post post) {
         this.postId = post.getPostId();
         this.name = post.getMember().getName();
         this.contents = post.getContents();
-        this.img = post.getImg();
         this.commentSize = post.getCommentSize();
         this.likeSize = post.getLikeSize();
         this.img = post.getImg();
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
+    }
+
+    public OnePostResponseDto(Post post, List<CommentResponseDto> commentResponseDtoList) {
+        this.postId = post.getPostId();
+        this.name = post.getMember().getName();
+        this.contents = post.getContents();
+        this.commentSize = post.getCommentSize();
+        this.likeSize = post.getLikeSize();
+        this.img = post.getImg();
+        this.createdAt = Chrono.timesAgo(post.getCreatedAt());
+        this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
+        this.commentList = commentResponseDtoList;
     }
 }

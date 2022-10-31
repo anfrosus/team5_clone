@@ -40,6 +40,8 @@ public class CustomExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST)
                 .body(errors);
     }
+
+
     // test
     @RequiredArgsConstructor
     @Getter

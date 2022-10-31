@@ -27,6 +27,7 @@ public class PostResponseDto {
         this.postId = post.getPostId();
         this.name = post.getMember().getName();
         this.contents = post.getContents();
+        this.img = post.getImg();
         this.commentSize = post.getCommentSize();
         this.likeSize = post.getLikeSize();
         this.img = post.getImg();

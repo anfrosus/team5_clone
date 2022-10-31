@@ -32,12 +32,12 @@ public class PostController {
 //    }
 
     @PostMapping("/post")
-    public GlobalResDto createPost(@RequestPart(value = "img") MultipartFile multipartFile,
-                                   @RequestParam(value = "content") String content,
-                                   @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        PostReqDto2 postReqDto2 = new PostReqDto2(multipartFile, content);
-        return postService.createPost(postReqDto2, userDetails.getMember());
-    };
+    public GlobalResDto<PostResponseDto> createPost(@RequestPart(required = false) List<MultipartFile> file,
+                                                    @RequestParam(required = false, value = "postRequestDto")String postRequestDto,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.createPost(postRequestDto,file,userDetails.getMember());
+    }
+
 
     @GetMapping("/post")
     public GlobalResDto<List<PostResponseDto>> allPost(){
@@ -54,8 +54,12 @@ public class PostController {
         return postService.delPost(postId,userDetails.getMember());
     }
 
-    @PutMapping("/post/{postId}")
-    public GlobalResDto<PostResponseDto> modifyPost(@PathVariable Long postId, @RequestBody Map<String,String> req, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.modifyPost(postId, req.get("contents"),userDetails.getMember());
+    @PatchMapping("/post/{postId}")
+    public GlobalResDto<PostResponseDto> modifyPost(@PathVariable Long postId,
+                                                    @RequestPart(required = false) MultipartFile file,
+                                                    @RequestParam (required = false, value = "content")String content,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.modifyPost(postId, file, content ,userDetails.getMember());
+
     }
 }

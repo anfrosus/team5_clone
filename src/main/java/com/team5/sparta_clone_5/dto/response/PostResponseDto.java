@@ -1,5 +1,6 @@
 package com.team5.sparta_clone_5.dto.response;
 
+import com.team5.sparta_clone_5.model.Img;
 import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.util.Chrono;
 import lombok.*;
@@ -32,6 +33,4 @@ public class PostResponseDto {
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
     }
-
-
 }

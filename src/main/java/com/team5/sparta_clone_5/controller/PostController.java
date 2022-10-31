@@ -39,10 +39,10 @@ public class PostController {
     }
 
 
-    @GetMapping("/post")
-    public GlobalResDto<List<PostResponseDto>> allPost(){
-        return postService.allPost();
-    }
+//    @GetMapping("/post")
+//    public GlobalResDto<List<PostResponseDto>> allPost(){
+//        return postService.allPost();
+//    }
 
     @GetMapping("/post/{postId}")
     public GlobalResDto<OnePostResponseDto> onePost(@PathVariable Long postId,

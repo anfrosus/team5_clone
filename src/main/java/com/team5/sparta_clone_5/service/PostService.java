@@ -66,10 +66,16 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalResDto<List<PostResponseDto>> allPost(){
+    public GlobalResDto<List<PostResponseDto>> allPost(Long imageId){
         List<Post> posts = postRepository.findAll();
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
+        List<Img> imgs = imgRepository.findImgByImageId(imageId);
+
+
         for (Post post : posts){
+            for(Img img : imgs){
+                 post = new Post(img);
+            }
             postResponseDtos.add(new PostResponseDto(post));
         }
         return GlobalResDto.success(postResponseDtos,"조회성공");

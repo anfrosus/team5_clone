@@ -33,6 +33,9 @@ public class Post extends TimeStamped {
     @Column(nullable = false)
     private int likeSize;
 
+    @Column(nullable = false)
+    private String img;
+
 //    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 //    List<Img> img = new ArrayList<>();
 
@@ -52,6 +55,11 @@ public class Post extends TimeStamped {
     public Post(String postRequestDto, Member member) {
         this.contents = postRequestDto;
         this.member = member;
+
+    }
+
+    public Post(String img) {
+        this.img = img;
 
     }
 

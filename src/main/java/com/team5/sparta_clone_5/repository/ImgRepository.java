@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ImgRepository extends JpaRepository<Img, Long> {
     List<Img> findByPostPostId(Long postId);
+    List<Img> findImgByImageId(Long imageId);
     void deleteByPostPostId(Long postId);
 
 }

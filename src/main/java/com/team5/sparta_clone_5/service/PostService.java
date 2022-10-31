@@ -12,6 +12,7 @@ import com.team5.sparta_clone_5.model.Comment;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.repository.CommentRepository;
+import com.team5.sparta_clone_5.repository.PostLikeRepository;
 import com.team5.sparta_clone_5.repository.PostRepository;
 import com.team5.sparta_clone_5.s3.S3Service;
 
@@ -30,6 +31,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+
+    private final PostLikeRepository postLikeRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -64,13 +67,14 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalResDto<OnePostResponseDto> onePost(Long postId){
+    public GlobalResDto<OnePostResponseDto> onePost(Long postId, Member currentMember){
         Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("글 조회", ErrorCode.NotFound));
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        Boolean amILike = postLikeRepository.existsByMemberAndPost(currentMember, post);
         for (Comment comment : post.getCommentList()){
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
-        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post, commentResponseDtoList);
+        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post, commentResponseDtoList, amILike);
         return GlobalResDto.success(onePostResponseDto,"조회 성공");
     }
 

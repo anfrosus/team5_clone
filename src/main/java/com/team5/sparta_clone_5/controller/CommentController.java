@@ -3,6 +3,7 @@ package com.team5.sparta_clone_5.controller;
 import com.team5.sparta_clone_5.config.UserDetailsImpl;
 import com.team5.sparta_clone_5.dto.request.CommentRequestDto;
 import com.team5.sparta_clone_5.dto.response.CommentResponseDto;
+import com.team5.sparta_clone_5.dto.response.RecommentResDto;
 import com.team5.sparta_clone_5.repository.CommentRepository;
 import com.team5.sparta_clone_5.service.CommentService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,4 +32,5 @@ public class CommentController {
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(commentId, userDetails.getMember());
     }
+
 }

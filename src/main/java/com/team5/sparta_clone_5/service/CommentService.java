@@ -2,6 +2,7 @@ package com.team5.sparta_clone_5.service;
 
 import com.team5.sparta_clone_5.dto.request.CommentRequestDto;
 import com.team5.sparta_clone_5.dto.response.CommentResponseDto;
+import com.team5.sparta_clone_5.dto.response.RecommentResDto;
 import com.team5.sparta_clone_5.exception.CustomException;
 import com.team5.sparta_clone_5.exception.ErrorCode;
 import com.team5.sparta_clone_5.model.Comment;
@@ -16,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -89,5 +93,16 @@ public class CommentService {
                 CommentResponseDto.builder()
                         .build()
         );
+    }
+
+    //대댓글 조회
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<RecommentResDto>> selectRecomment(Long commentId) {
+        List<Recomment> recommentList = recommentRepository.findRecommentsByCommentId(commentId);
+        List<RecommentResDto> dtoList = new ArrayList<>();
+        for (Recomment r : recommentList){
+            dtoList.add(new RecommentResDto(r));
+        }
+        return ResponseEntity.ok(dtoList);
     }
 }

@@ -32,10 +32,10 @@ public class PostController {
 //    }
 
     @PostMapping("/post")
-    public GlobalResDto<PostResponseDto> createPost(@RequestPart(required = false) List<MultipartFile> file,
+    public GlobalResDto<PostResponseDto> createPost(@RequestPart(required = false) List<MultipartFile> img,
                                                     @RequestParam(required = false, value = "postRequestDto")String postRequestDto,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.createPost(postRequestDto,file,userDetails.getMember());
+        return postService.createPost(postRequestDto,img,userDetails.getMember());
     }
 
 

@@ -53,5 +53,6 @@ public class Post extends TimeStamped {
         this.likeSize = size;
     }
 
+    public void commentUpdate(int size){this.commentSize = size;}
 }
 

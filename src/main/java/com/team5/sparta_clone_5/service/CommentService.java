@@ -31,6 +31,8 @@ public class CommentService {
     public ResponseEntity<CommentResponseDto> createComment(Long postId, CommentRequestDto commentRequestDto, Member currentMember) {
         Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("댓글 작성", ErrorCode.NotFound));
         Comment comment = new Comment(commentRequestDto.getComment(), post, currentMember);
+        int sizeOfComment = post.getCommentSize();
+        post.commentUpdate(sizeOfComment + 1);
         commentRepository.save(comment);
         return ResponseEntity.ok(CommentResponseDto.builder()
                 .commentId(comment.getId())
@@ -43,8 +45,11 @@ public class CommentService {
 
     @Transactional
     public ResponseEntity<CommentResponseDto> deleteComment(Long commentId, Member currentMember) {
+        Post post = postRepository.findByMember(currentMember).orElseThrow(() -> new CustomException("댓글 삭제", ErrorCode.NotFound));
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CustomException("댓글 삭제", ErrorCode.NotFound));
         if (comment.getMember().getId().equals(currentMember.getId())) {
+            int sizeOfComment = post.getCommentSize();
+            post.commentUpdate(sizeOfComment - 1);
             commentRepository.deleteById(commentId);
         } else {
             throw new CustomException("댓글 작성자", ErrorCode.NotMatch);

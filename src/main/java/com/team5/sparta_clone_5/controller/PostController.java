@@ -9,6 +9,7 @@ import com.team5.sparta_clone_5.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,10 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/post")
-    public GlobalResDto<PostResponseDto> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.createPost(postRequestDto,userDetails.getMember());
+    public GlobalResDto<PostResponseDto> createPost(@RequestPart(required = false) List<MultipartFile> file,
+                                                    @RequestParam(required = false, value = "postRequestDto")String postRequestDto,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.createPost(postRequestDto,file,userDetails.getMember());
     }
 
     @GetMapping("/post")
@@ -40,7 +43,10 @@ public class PostController {
     }
 
     @PatchMapping("/post/{postId}")
-    public GlobalResDto<PostResponseDto> modifyPost(@PathVariable Long postId, @RequestBody Map<String,String> req, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.modifyPost(postId, req.get("contents"),userDetails.getMember());
+    public GlobalResDto<PostResponseDto> modifyPost(@PathVariable Long postId,
+                                                    @RequestPart(required = false) MultipartFile file,
+                                                    @RequestParam (required = false, value = "content")String content,
+                                                    @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.modifyPost(postId, file, content ,userDetails.getMember());
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -31,13 +32,12 @@ public class S3Service {
         String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
         fileObj.delete();
-        return "File uploaded : " + fileName;
+        return fileName;
     }
 
 
-    public String deleteFile(String fileName) {
+    public void deleteFile(String fileName) {
         s3Client.deleteObject(bucketName, fileName);
-        return fileName + " removed ...";
     }
 
 

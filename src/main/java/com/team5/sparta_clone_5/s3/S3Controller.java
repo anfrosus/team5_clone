@@ -7,6 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/file")
 public class S3Controller {
@@ -15,14 +18,14 @@ public class S3Controller {
     private S3Service s3Service;
 
     @PostMapping(value = "/upload")
-    public ResponseEntity<String> uploadFile(@RequestPart MultipartFile image,
+    public ResponseEntity<String> uploadFile(@RequestPart List<MultipartFile> image,
                                              @RequestPart String content) {
         System.out.println(content);
         return new ResponseEntity<>(s3Service.uploadFile(image), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
-        return new ResponseEntity<>(s3Service.deleteFile(fileName), HttpStatus.OK);
+    public void deleteFile(@PathVariable String fileName) {
+
     }
 }

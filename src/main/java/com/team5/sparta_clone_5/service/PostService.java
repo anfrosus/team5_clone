@@ -5,25 +5,36 @@ import com.team5.sparta_clone_5.dto.response.GlobalResDto;
 import com.team5.sparta_clone_5.dto.response.PostResponseDto;
 import com.team5.sparta_clone_5.exception.CustomException;
 import com.team5.sparta_clone_5.exception.ErrorCode;
+import com.team5.sparta_clone_5.model.Img;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.repository.PostRepository;
+import com.team5.sparta_clone_5.s3.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final S3Service s3Service;
 
     @Transactional
-    public GlobalResDto<PostResponseDto> createPost(PostRequestDto postRequestDto, Member member){
-        Post post = new Post(postRequestDto,member,"s");
+    public GlobalResDto<PostResponseDto> createPost(String postRequestDto, List<MultipartFile> file, Member member){
+        List<Img> imgs = new ArrayList<>();
+        for (MultipartFile multipartFile : file) {
+            String img = s3Service.uploadFile(multipartFile);
+            imgs.add()
+        }
+
+        Post post = new Post(postRequestDto,member,img);
         String email = post.getMember().getEmail();
         if(member.getEmail().equals(email)){
             post = postRepository.save(post);
@@ -60,10 +71,14 @@ public class PostService {
     }
 
     @Transactional
-    public GlobalResDto<PostResponseDto> modifyPost(Long postId,String contents, Member member){
+    public GlobalResDto<PostResponseDto> modifyPost(Long postId,MultipartFile file, String contents, Member member){
         Post post = postRepository.findPostByPostIdAndMember(postId,member);
         if (post==null) return GlobalResDto.fail("수정 권한이 없습니다.");
+        String img = post.getImg();
+        s3Service.deleteFile(img);
+        String img2 = s3Service.uploadFile(file);
         post.setContents(contents);
+        post.setImg(img2);
         PostResponseDto postResponseDto = new PostResponseDto(postRepository.save(post));
         return GlobalResDto.success(postResponseDto,"수정이 완료 되었습니다.");
 

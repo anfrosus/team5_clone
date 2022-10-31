@@ -23,4 +23,8 @@ public class Img {
     @JsonBackReference
     private Post post;
 
+    public Img(String image, Post post) {
+        this.image = image;
+        this.post = post;
+    }
 }

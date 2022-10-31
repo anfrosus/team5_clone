@@ -2,12 +2,12 @@ package com.team5.sparta_clone_5.dto.response;
 
 import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.util.Chrono;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -16,7 +16,7 @@ public class PostResponseDto {
     private String name;
     private String contents;
 
-    private String img;
+    private List<String> imgs;
     private int commentSize;
     private int likeSize;
 
@@ -27,11 +27,11 @@ public class PostResponseDto {
         this.postId = post.getPostId();
         this.name = post.getMember().getName();
         this.contents = post.getContents();
-        this.img = post.getImg();
         this.commentSize = post.getCommentSize();
         this.likeSize = post.getLikeSize();
-        this.img = post.getImg();
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
     }
+
+
 }

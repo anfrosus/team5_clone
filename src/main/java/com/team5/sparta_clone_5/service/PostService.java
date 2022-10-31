@@ -12,6 +12,7 @@ import com.team5.sparta_clone_5.model.Comment;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.repository.CommentRepository;
+import com.team5.sparta_clone_5.repository.ImgRepository;
 import com.team5.sparta_clone_5.repository.PostRepository;
 import com.team5.sparta_clone_5.s3.S3Service;
 
@@ -30,27 +31,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final ImgRepository imgRepository;
     private final S3Service s3Service;
 
     @Transactional
     public GlobalResDto<PostResponseDto> createPost(String postRequestDto, List<MultipartFile> file, Member member){
         List<Img> imgs = new ArrayList<>();
+        Post post = new Post(postRequestDto,member);
         for (MultipartFile multipartFile : file) {
-            String img = s3Service.uploadFile(multipartFile);
-            imgs.add()
+            Img img = imgRepository.save(new Img(s3Service.uploadFile(multipartFile),post));
+            imgs.add(img);
+        }
+        post.setImgs(imgs);
+        postRepository.save(post);
+        PostResponseDto postResponseDto = new PostResponseDto(post);
+
+        List<String> imgList = new ArrayList<>();
+        for (Img img:imgs) {
+            imgList.add(img.getImage());
         }
 
-        Post post = new Post(postRequestDto,member,img);
-        String email = post.getMember().getEmail();
-        if(member.getEmail().equals(email)){
-            post = postRepository.save(post);
-            PostResponseDto postResponseDto = new PostResponseDto(post);
-            return GlobalResDto.success(postResponseDto,"게시글 작성이 완료 되었습니다.");
-        }
-        else {
-            return GlobalResDto.fail("작성 권한이 없습니다.");
-        }
+        postResponseDto.setImgs(imgList);
 
+        return GlobalResDto.success(postResponseDto,"게시글 작성 완료되었습니다.");
     }
 
     @Transactional(readOnly = true)
@@ -86,11 +89,7 @@ public class PostService {
     public GlobalResDto<PostResponseDto> modifyPost(Long postId,MultipartFile file, String contents, Member member){
         Post post = postRepository.findPostByPostIdAndMember(postId,member);
         if (post==null) return GlobalResDto.fail("수정 권한이 없습니다.");
-        String img = post.getImg();
-        s3Service.deleteFile(img);
-        String img2 = s3Service.uploadFile(file);
         post.setContents(contents);
-        post.setImg(img2);
         PostResponseDto postResponseDto = new PostResponseDto(postRepository.save(post));
         return GlobalResDto.success(postResponseDto,"수정이 완료 되었습니다.");
 

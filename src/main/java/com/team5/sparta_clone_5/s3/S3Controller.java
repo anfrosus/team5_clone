@@ -18,7 +18,7 @@ public class S3Controller {
     private S3Service s3Service;
 
     @PostMapping(value = "/upload")
-    public ResponseEntity<String> uploadFile(@RequestPart List<MultipartFile> image,
+    public ResponseEntity<String> uploadFile(@RequestPart MultipartFile image,
                                              @RequestPart String content) {
         System.out.println(content);
         return new ResponseEntity<>(s3Service.uploadFile(image), HttpStatus.OK);

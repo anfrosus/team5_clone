@@ -18,7 +18,7 @@ public class OnePostResponseDto {
     private String name;
     private String contents;
 
-    private String img;
+    private List<String> img;
     private int commentSize;
     private int likeSize;
     private String createdAt;
@@ -32,7 +32,6 @@ public class OnePostResponseDto {
         this.contents = post.getContents();
         this.commentSize = post.getCommentSize();
         this.likeSize = post.getLikeSize();
-        this.img = post.getImg();
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
     }
@@ -43,7 +42,6 @@ public class OnePostResponseDto {
         this.contents = post.getContents();
         this.commentSize = post.getCommentSize();
         this.likeSize = post.getLikeSize();
-        this.img = post.getImg();
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
         this.commentList = commentResponseDtoList;

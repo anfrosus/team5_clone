@@ -56,34 +56,36 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalResDto<?> allPost(Long imageId){
+    public GlobalResDto<?> allPost(){
         List<Post> posts = postRepository.findAll();
-        List<PostResponseDto> postResponseDtos = new ArrayList<>();
-        List<Img> imgList = imgRepository.findImgByImageId(imageId);
-        List<String> imgs = new ArrayList<>();
+        List<AllPostResponseDto> postResponseDtos = new ArrayList<>();
 
-        for (Img img: imgList) {
-            for(Post post : posts){
-                postResponseDtos.add(new PostResponseDto(post));
+        for(Post p : posts){
+            List<String> imgList = new ArrayList<>();
+            for(Img i : p.getImgs()){
+                imgList.add(i.getImage());
             }
-            imgs.add(img.getImage());
-
+            postResponseDtos.add(new AllPostResponseDto(p, imgList));
         }
-        AllPostResponseDto allPostResponseDto = new AllPostResponseDto(postResponseDtos,imgs);
 
-        return GlobalResDto.success(allPostResponseDto,"조회성공");
+        return GlobalResDto.success(postResponseDtos,"조회성공");
     }
 
     @Transactional(readOnly = true)
     public GlobalResDto<OnePostResponseDto> onePost(Long postId, Long imageId,Member currentMember){
         Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("글 조회", ErrorCode.NotFound));
-        Optional<Img> img = imgRepository.findById(imageId);
+        List<Img> imgList = post.getImgs();
+        List<String> imgs = new ArrayList<>();
+        for(Img a : imgList){
+            imgs.add(a.getImage());
+        }
+//        Optional<Img> img = imgRepository.findById(imageId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         Boolean amILike = postLikeRepository.existsByMemberAndPost(currentMember, post);
         for (Comment comment : post.getCommentList()){
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
-        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post,img, commentResponseDtoList, amILike);
+        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post,imgs, commentResponseDtoList, amILike);
         return GlobalResDto.success(onePostResponseDto,"조회 성공");
     }
 

@@ -15,24 +15,22 @@ public class AllPostResponseDto {
     private String name;
     private String contents;
 
-    private List<Img> imgs;
+    private List<String> imgs;
     private int commentSize;
     private int likeSize;
 
     private String createdAt;
     private String modifiedAt;
 
-    public AllPostResponseDto(Post post) {
+
+    public AllPostResponseDto(Post post,List<String> imgs) {
         this.postId = post.getPostId();
         this.name = post.getMember().getName();
         this.contents = post.getContents();
-        this.imgs = post.getImgs();
+        this.imgs = imgs;
         this.commentSize = post.getCommentSize();
         this.likeSize = post.getLikeSize();
         this.createdAt = Chrono.timesAgo(post.getCreatedAt());
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
-    }
-
-    public AllPostResponseDto(List<PostResponseDto> postResponseDtos,List<String> imgs) {
     }
 }

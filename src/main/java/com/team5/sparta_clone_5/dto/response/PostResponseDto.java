@@ -20,7 +20,6 @@ public class PostResponseDto {
     private List<String> imgs;
     private int commentSize;
     private int likeSize;
-
     private String createdAt;
     private String modifiedAt;
 

@@ -16,7 +16,7 @@ public class Chrono {
 
     public static String timesAgo(LocalDateTime dayBefore) {
         long gap = ChronoUnit.MINUTES.between(dayBefore, LocalDateTime.now());
-        String word;
+        String word = "";
         if (gap == 0){
             word = "방금 전";
         }else if (gap < 60) {
@@ -25,7 +25,9 @@ public class Chrono {
             word = (gap / 60) + "시간 전";
         }else if (gap < 60 * 24 * 10) {
             word = (gap / 60 / 24) + "일 전";
-        } else {
+        }else if (gap < 60 * 24 * 7 * 5) {
+            word = (gap / 60 / 24 / 7) + "주 전";
+        }else {
             word = dayBefore.format(DateTimeFormatter.ofPattern("MM월 dd일"));
         }
         return word;

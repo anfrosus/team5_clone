@@ -43,8 +43,8 @@ public class PostController {
 
 
     @GetMapping("/post")
-    public GlobalResDto<?> allPost(@PathVariable Long imageId){
-        return postService.allPost(imageId);
+    public GlobalResDto<?> allPost(){
+        return postService.allPost();
     }
 
     @GetMapping("/post/{postId}")

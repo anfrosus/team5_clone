@@ -49,8 +49,8 @@ public class CommentService {
 
     @Transactional
     public ResponseEntity<CommentResponseDto> deleteComment(Long commentId, Member currentMember) {
-        Post post = postRepository.findByMember(currentMember).orElseThrow(() -> new CustomException("댓글 삭제", ErrorCode.NotFound));
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CustomException("댓글 삭제", ErrorCode.NotFound));
+        Post post = comment.getPost();
         if (comment.getMember().getId().equals(currentMember.getId())) {
             int sizeOfComment = post.getCommentSize();
             post.commentUpdate(sizeOfComment - 1);

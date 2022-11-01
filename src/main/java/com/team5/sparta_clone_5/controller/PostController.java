@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,22 +33,24 @@ public class PostController {
 //    }
 
     @PostMapping("/post")
-    public GlobalResDto<PostResponseDto> createPost(@RequestPart(required = false) List<MultipartFile> img,
-                                                    @RequestParam(required = false, value = "postRequestDto")String postRequestDto,
+    public GlobalResDto<PostResponseDto> createPost(MultipartHttpServletRequest imgs,
+                                                    @RequestParam(required = false, value = "content")String postRequestDto,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postService.createPost(postRequestDto,img,userDetails.getMember());
+        List<MultipartFile> multipartFiles = imgs.getFiles("img");
+
+        return postService.createPost(postRequestDto,multipartFiles,userDetails.getMember());
     }
 
 
-//    @GetMapping("/post")
-//    public GlobalResDto<List<PostResponseDto>> allPost(){
-//        return postService.allPost();
-//    }
+    @GetMapping("/post")
+    public GlobalResDto<?> allPost(@PathVariable Long imageId){
+        return postService.allPost(imageId);
+    }
 
     @GetMapping("/post/{postId}")
-    public GlobalResDto<OnePostResponseDto> onePost(@PathVariable Long postId,
+    public GlobalResDto<OnePostResponseDto> onePost(@PathVariable Long postId,Long imageId,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.onePost(postId, userDetails.getMember());
+        return postService.onePost(postId, imageId, userDetails.getMember());
     }
 
     @DeleteMapping("/post/{postId}")

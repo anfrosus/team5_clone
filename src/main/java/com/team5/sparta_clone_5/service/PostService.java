@@ -1,31 +1,21 @@
 package com.team5.sparta_clone_5.service;
 
-import com.team5.sparta_clone_5.dto.request.PostReqDto2;
-import com.team5.sparta_clone_5.dto.response.CommentResponseDto;
-import com.team5.sparta_clone_5.dto.response.GlobalResDto;
-import com.team5.sparta_clone_5.dto.response.OnePostResponseDto;
-import com.team5.sparta_clone_5.dto.response.PostResponseDto;
+import com.team5.sparta_clone_5.dto.response.*;
 import com.team5.sparta_clone_5.exception.CustomException;
 import com.team5.sparta_clone_5.exception.ErrorCode;
-import com.team5.sparta_clone_5.model.Img;
 import com.team5.sparta_clone_5.model.Comment;
+import com.team5.sparta_clone_5.model.Img;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
-import com.team5.sparta_clone_5.repository.CommentRepository;
-
 import com.team5.sparta_clone_5.repository.ImgRepository;
-
 import com.team5.sparta_clone_5.repository.PostLikeRepository;
-
 import com.team5.sparta_clone_5.repository.PostRepository;
 import com.team5.sparta_clone_5.s3.S3Service;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -66,32 +56,51 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public GlobalResDto<List<PostResponseDto>> allPost(Long imageId){
+    public GlobalResDto<?> allPost(Long imageId){
         List<Post> posts = postRepository.findAll();
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
-        List<Img> imgs = imgRepository.findImgByImageId(imageId);
+        List<Img> imgList = imgRepository.findImgByImageId(imageId);
+        List<String> imgs = new ArrayList<>();
 
-
-        for (Post post : posts){
-            for(Img img : imgs){
-                 post = new Post(img);
+        for (Img img: imgList) {
+            for(Post post : posts){
+                postResponseDtos.add(new PostResponseDto(post));
             }
-            postResponseDtos.add(new PostResponseDto(post));
+            imgs.add(img.getImage());
+
         }
-        return GlobalResDto.success(postResponseDtos,"조회성공");
+        AllPostResponseDto allPostResponseDto = new AllPostResponseDto(postResponseDtos,imgs);
+
+        return GlobalResDto.success(allPostResponseDto,"조회성공");
     }
 
     @Transactional(readOnly = true)
-    public GlobalResDto<OnePostResponseDto> onePost(Long postId, Member currentMember){
+    public GlobalResDto<OnePostResponseDto> onePost(Long postId, Long imageId,Member currentMember){
         Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("글 조회", ErrorCode.NotFound));
+        Optional<Img> img = imgRepository.findById(imageId);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         Boolean amILike = postLikeRepository.existsByMemberAndPost(currentMember, post);
         for (Comment comment : post.getCommentList()){
             commentResponseDtoList.add(new CommentResponseDto(comment));
         }
-        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post, commentResponseDtoList, amILike);
+        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post,img, commentResponseDtoList, amILike);
         return GlobalResDto.success(onePostResponseDto,"조회 성공");
     }
+
+// 성우님 코드
+//    @Transactional(readOnly = true)
+//    public GlobalResDto<OnePostResponseDto> onePost(Long postId, Member currentMember){
+//        Post post = postRepository.findByPostId(postId).orElseThrow(() -> new CustomException("글 조회", ErrorCode.NotFound));
+//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+//        Boolean amILike = postLikeRepository.existsByMemberAndPost(currentMember, post);
+//        for (Comment comment : post.getCommentList()){
+//            commentResponseDtoList.add(new CommentResponseDto(comment));
+//        }
+//        OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post, commentResponseDtoList, amILike);
+//        return GlobalResDto.success(onePostResponseDto,"조회 성공");
+//    }
+
+
 
     @Transactional
     public GlobalResDto<PostResponseDto> delPost(Long postId,Member member){

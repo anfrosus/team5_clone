@@ -14,6 +14,7 @@ import com.team5.sparta_clone_5.repository.PostRepository;
 import com.team5.sparta_clone_5.repository.RecommentRepository;
 import com.team5.sparta_clone_5.util.Chrono;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +28,7 @@ public class CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
-
     private final RecommentRepository recommentRepository;
-
 
     @Transactional
     public ResponseEntity<CommentResponseDto> createComment(Long postId, CommentRequestDto commentRequestDto, Member currentMember) {

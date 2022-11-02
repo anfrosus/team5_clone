@@ -2,10 +2,7 @@ package com.team5.sparta_clone_5.dto.response;
 
 import com.team5.sparta_clone_5.model.Comment;
 import com.team5.sparta_clone_5.util.Chrono;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor

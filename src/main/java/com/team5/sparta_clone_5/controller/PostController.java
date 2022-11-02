@@ -37,6 +37,7 @@ public class PostController {
                                                     @RequestParam(required = false, value = "content")String postRequestDto,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<MultipartFile> multipartFiles = imgs.getFiles("img");
+        System.out.println("받아올 때 사진 갯수" + multipartFiles.size());
 
         return postService.createPost(postRequestDto,multipartFiles,userDetails.getMember());
     }
@@ -58,7 +59,7 @@ public class PostController {
         return postService.delPost(postId,userDetails.getMember());
     }
 
-    @PatchMapping("/post/{postId}")
+    @PutMapping("/post/{postId}")
     public GlobalResDto<PostResponseDto> modifyPost(@PathVariable Long postId,
                                                     @RequestPart(required = false) MultipartFile file,
                                                     @RequestParam (required = false, value = "content")String content,

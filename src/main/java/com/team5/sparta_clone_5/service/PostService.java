@@ -39,6 +39,7 @@ public class PostService {
         Post post = new Post(postRequestDto,member);
         for (MultipartFile multipartFile : file) {
             Img img = imgRepository.save(new Img(s3Service.uploadFile(multipartFile),post));
+            System.out.println("저장 후 URL===========" + img.getImage());
             imgs.add(img);
         }
         post.setImgs(imgs);
@@ -62,6 +63,7 @@ public class PostService {
 
         for(Post p : posts){
             List<String> imgList = new ArrayList<>();
+            System.out.println("조회 할 때 이미지 리스트 사이즈" + imgList.size());
             for(Img i : p.getImgs()){
                 imgList.add(i.getImage());
             }

@@ -21,7 +21,7 @@ public class LikeController {
         return likeService.postLike(postId, userDetails.getMember());
     }
 
-    @GetMapping("/api/comment/likes{commentId}")
+    @GetMapping("/api/comment/likes/{commentId}")
     public String commentLike(@PathVariable Long commentId,
                               @AuthenticationPrincipal UserDetailsImpl userDetails){
         return likeService.commentLike(commentId, userDetails.getMember());

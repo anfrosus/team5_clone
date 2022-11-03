@@ -10,4 +10,5 @@ import lombok.Getter;
 public class MemberResponseDto {
     private Long memberId;
     private String msg;
+    private String memberName;
 }

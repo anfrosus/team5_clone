@@ -20,7 +20,7 @@ public class OnePostResponseDto {
     private String name;
     private String contents;
 
-    private List<String> img;
+    private String img;
     private int commentSize;
     private int likeSize;
     private String createdAt;
@@ -49,6 +49,6 @@ public class OnePostResponseDto {
         this.modifiedAt = Chrono.timesAgo(post.getModifiedAt());
         this.commentList = commentResponseDtoList;
         this.amILike = amILike;
-        this.img = img;
+        this.img = img.get(0);
     }
 }

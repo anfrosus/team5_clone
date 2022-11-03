@@ -7,6 +7,7 @@ import com.team5.sparta_clone_5.model.Comment;
 import com.team5.sparta_clone_5.model.Img;
 import com.team5.sparta_clone_5.model.Member;
 import com.team5.sparta_clone_5.model.Post;
+import com.team5.sparta_clone_5.repository.CommentLikeRepository;
 import com.team5.sparta_clone_5.repository.ImgRepository;
 import com.team5.sparta_clone_5.repository.PostLikeRepository;
 import com.team5.sparta_clone_5.repository.PostRepository;
@@ -30,6 +31,8 @@ public class PostService {
 
 
     private final PostLikeRepository postLikeRepository;
+
+    private final CommentLikeRepository commentLikeRepository;
 
     private final S3Service s3Service;
 
@@ -85,7 +88,8 @@ public class PostService {
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         Boolean amILike = postLikeRepository.existsByMemberAndPost(currentMember, post);
         for (Comment comment : post.getCommentList()){
-            commentResponseDtoList.add(new CommentResponseDto(comment));
+            boolean amILikeC = commentLikeRepository.existsByCommentIdAndMember(comment.getId(), currentMember);
+            commentResponseDtoList.add(new CommentResponseDto(comment, amILikeC));
         }
         OnePostResponseDto onePostResponseDto = new OnePostResponseDto(post,imgs, commentResponseDtoList, amILike);
         return GlobalResDto.success(onePostResponseDto,"조회 성공");

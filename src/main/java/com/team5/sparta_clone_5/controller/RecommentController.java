@@ -33,7 +33,8 @@ public class RecommentController {
     }
 
     @GetMapping("/{commentId}")
-    public ResponseEntity<List<RecommentResDto>> getRecomment(@PathVariable Long commentId) {
-        return commentService.selectRecomment(commentId);
+    public ResponseEntity<List<RecommentResDto>> getRecomment(@PathVariable Long commentId,
+                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return commentService.selectRecomment(commentId, userDetails.getMember());
     }
 }

@@ -1,5 +1,6 @@
 package com.team5.sparta_clone_5.service;
 
+import com.team5.sparta_clone_5.config.UserDetailsImpl;
 import com.team5.sparta_clone_5.dto.request.CommentRequestDto;
 import com.team5.sparta_clone_5.dto.response.CommentResponseDto;
 import com.team5.sparta_clone_5.dto.response.RecommentResDto;
@@ -11,6 +12,7 @@ import com.team5.sparta_clone_5.model.Post;
 import com.team5.sparta_clone_5.model.Recomment;
 import com.team5.sparta_clone_5.repository.CommentRepository;
 import com.team5.sparta_clone_5.repository.PostRepository;
+import com.team5.sparta_clone_5.repository.RecommentLikeRepository;
 import com.team5.sparta_clone_5.repository.RecommentRepository;
 import com.team5.sparta_clone_5.util.Chrono;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final RecommentRepository recommentRepository;
+    private final RecommentLikeRepository recommentLikeRepository;
 
     @Transactional
     public ResponseEntity<CommentResponseDto> createComment(Long postId, CommentRequestDto commentRequestDto, Member currentMember) {
@@ -96,11 +99,12 @@ public class CommentService {
 
     //대댓글 조회
     @Transactional(readOnly = true)
-    public ResponseEntity<List<RecommentResDto>> selectRecomment(Long commentId) {
+    public ResponseEntity<List<RecommentResDto>> selectRecomment(Long commentId, Member currentMember) {
         List<Recomment> recommentList = recommentRepository.findRecommentsByCommentId(commentId);
         List<RecommentResDto> dtoList = new ArrayList<>();
         for (Recomment r : recommentList){
-            dtoList.add(new RecommentResDto(r));
+            boolean amILike = recommentLikeRepository.existsByRecommentIdAndMember(r.getId(), currentMember);
+            dtoList.add(new RecommentResDto(r, amILike));
         }
         return ResponseEntity.ok(dtoList);
     }

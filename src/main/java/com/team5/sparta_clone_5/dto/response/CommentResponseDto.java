@@ -15,11 +15,14 @@ public class CommentResponseDto {
     private String createdAt;
     private int likeSize;
 
-    public CommentResponseDto(Comment comment) {
+    private boolean amILike;
+
+    public CommentResponseDto(Comment comment, boolean amILike) {
         this.commentId = comment.getId();
         this.name = comment.getMember().getName();
         this.comment = comment.getComment();
         this.createdAt = Chrono.timesAgo(comment.getCreatedAt());
         this.likeSize = comment.getCommentLikeSize();
+        this.amILike = amILike;
     }
 }

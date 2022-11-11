@@ -25,10 +25,16 @@ public class Recomment extends TimeStamped{
     @Column(nullable = false)
     private String recomment;
 
+    private int recommentLikeSize;
+
 
     public Recomment(Comment comment, Member member, String recomment) {
         this.comment = comment;
         this.member = member;
         this.recomment = recomment;
+    }
+
+    public void updateLikeSize(int size) {
+        this.recommentLikeSize = size;
     }
 }

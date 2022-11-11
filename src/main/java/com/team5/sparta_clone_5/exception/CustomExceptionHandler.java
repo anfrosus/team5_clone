@@ -41,7 +41,6 @@ public class CustomExceptionHandler {
                 .body(errors);
     }
 
-
     // test
     @RequiredArgsConstructor
     @Getter
@@ -58,7 +57,6 @@ public class CustomExceptionHandler {
                     .body(ErrorResponse.builder()
                             .httpStatus(e.getErrorCode().getHttpStatus())
                             .errorCode(e.getErrorCode().getErrorCode())
-                            .field(e.getField())
                             .message(e.getErrorCode().getMessage())
                             .build()
                     );

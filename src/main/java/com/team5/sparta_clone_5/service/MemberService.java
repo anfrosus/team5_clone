@@ -55,6 +55,7 @@ public class MemberService {
                 MemberResponseDto.builder()
                         .memberId(member.getId())
                         .msg("회원가입이 완료되었습니다.")
+                        .memberName(member.getName())
                         .build()
         );
     }
@@ -91,6 +92,7 @@ public class MemberService {
                 MemberResponseDto.builder()
                         .memberId(member.getId())
                         .msg("로그인 완료")
+                        .memberName(member.getName())
                         .build()
         );
     }

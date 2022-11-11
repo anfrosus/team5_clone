@@ -3,10 +3,7 @@ package com.team5.sparta_clone_5.service;
 import com.team5.sparta_clone_5.exception.CustomException;
 import com.team5.sparta_clone_5.exception.ErrorCode;
 import com.team5.sparta_clone_5.model.*;
-import com.team5.sparta_clone_5.repository.CommentLikeRepository;
-import com.team5.sparta_clone_5.repository.CommentRepository;
-import com.team5.sparta_clone_5.repository.PostLikeRepository;
-import com.team5.sparta_clone_5.repository.PostRepository;
+import com.team5.sparta_clone_5.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +18,10 @@ public class LikeService {
     private final CommentRepository commentRepository;
 
     private final CommentLikeRepository commentLikeRepository;
+
+    private final RecommentRepository recommentRepository;
+
+    private final RecommentLikeRepository recommentLikeRepository;
 
     @Transactional
     public String postLike(Long postId, Member currentMember) {
@@ -57,4 +58,23 @@ public class LikeService {
         }
         return isLike;
     }
+
+    @Transactional
+    public String recommentLike(Long recommentId, Member currentMember) {
+        Recomment recomment = recommentRepository.findById(recommentId).orElseThrow(() -> new CustomException("대댓글 좋아요", ErrorCode.NotFound));
+        int sizeOfCoLikes = recomment.getRecommentLikeSize();
+        String isLike = "";
+        if(!recommentLikeRepository.existsByRecommentIdAndMember(recommentId, currentMember)){
+            RecommentLike recommentLike = new RecommentLike(recomment, currentMember);
+            recomment.updateLikeSize(sizeOfCoLikes + 1);
+            recommentLikeRepository.save(recommentLike);
+            isLike = "좋아요 완료";
+        }else{
+            recommentLikeRepository.deleteByRecommentIdAndMember(recommentId, currentMember);
+            recomment.updateLikeSize(sizeOfCoLikes - 1);
+            isLike = "좋아요 취소";
+        }
+        return isLike;
+    }
+
 }

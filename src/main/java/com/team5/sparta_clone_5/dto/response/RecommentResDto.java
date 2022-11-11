@@ -13,11 +13,15 @@ public class RecommentResDto {
     private String createdAt;
     private int likeSize;
 
+    private boolean amILike;
 
-    public RecommentResDto(Recomment recomment) {
+
+    public RecommentResDto(Recomment recomment, boolean amILike) {
         this.recommentId = recomment.getId();
         this.name = recomment.getMember().getName();
         this.recomment = recomment.getRecomment();
         this.createdAt = Chrono.timesAgo(recomment.getCreatedAt());
+        this.likeSize = recomment.getRecommentLikeSize();
+        this.amILike = amILike;
     }
 }

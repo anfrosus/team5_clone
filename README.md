@@ -17,8 +17,6 @@
 
 <img src="https://img.shields.io/badge/AmazonS3-569A31?style=flat-square&logo=AmazonS3&logoColor=white"/>  <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=AmazonEC2&logoColor=white"/>  <img src="https://img.shields.io/badge/AmazonRDS-527FFF?style=flat-square&logo=AmazonRDS&logoColor=white"/>  <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>  <img src="https://img.shields.io/badge/Ubuntu-E95420?style=flat-square&logo=Ubuntu&logoColor=white"/>
 
-## [📚 프로젝트 팀 노션 보러가기](https://real-relish-378.notion.site/9C-W6-3-S-A-c6efadb6c1214d92a67c40b615a69d10](https://www.notion.so/5-Instagram-89a59a3c714b49648a7161997367f62e)) 
-
 ## 🏀 Trouble Shooting & 아쉬운점
 s3 이미지 업로드 시 여러개의 사진을 받아올 때 통신에 문제가 있었습니다. 
 MultipartFile의 리스트로 받아오다가 MultipartHttpServeletRequest 객체를 사용하여 키값을 통해 받아와 해결하였습니다.
